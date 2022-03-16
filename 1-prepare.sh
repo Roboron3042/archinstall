@@ -13,11 +13,11 @@ continuar() {
 
 dispositivo() {
 	echo "¿Qué dispositivo estás configurando?"
-	select yn in "Rober-PC" "Mariola" "Rober-miniportátil" "Otro"; do
+	select yn in "Rober-PC" "Mariola" "Rober-miniportatil" "Otro"; do
 		case $yn in
 			"Rober-PC" ) TARGET="Rober-PC"; break;;
 			"Mariola" ) TARGET="Mariola"; break;;
-			"Rober-miniportátil" ) TARGET="Rober-miniportátil"; break;;
+			"Rober-miniportatil" ) TARGET="Rober-miniportatil"; break;;
 			"Otro" ) TARGET="Otro" break;;
 		esac
 	done
@@ -73,14 +73,12 @@ dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
 chmod 600 /mnt/swapfile
 mkswap /mnt/swapfile
 swapon /mnt/swapfile
-echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
-continuar
 
 pacstrap /mnt base base-devel linux linux-firmware networkmanager
 if [ "$TARGET" != "Rober-PC" ]; then
 	pacstrap /mnt xf86-input-libinput
 fi
-if [ "$TARGET" = "Rober-miniportátil" ]; then
+if [ "$TARGET" = "Rober-miniportatil" ]; then
 	pacstrap /mnt grub
 fi
 genfstab -U -p /mnt >> /mnt/etc/fstab

@@ -18,7 +18,7 @@ passwd
 echo "---------------------------------"
 echo "4 - Configurando gestor de inicio"
 echo "---------------------------------"
-if [ "$TARGET" = "Rober-miniportátil" ]; then
+if [ "$TARGET" = "Rober-miniportatil" ]; then
 	grub-install --target=i386-pc /dev/sda
 	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=LABEL=Sistema:root root=\/dev\/mapper\/root quiet"/g' /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
