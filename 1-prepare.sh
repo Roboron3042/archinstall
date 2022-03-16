@@ -2,7 +2,7 @@
 
 continuar() {
 	while true; do
-		read -p "¿Continuar?" sn
+		read -p "¿Continuar? (s/n)" sn
 		case $sn in
 			[Ss]* ) break;;
 			[Nn]* ) ;;
@@ -21,6 +21,7 @@ dispositivo() {
 			"Otro" ) TARGET="Otro" break;;
 		esac
 	done
+	echo $TARGET >> dispositivo
 }
 
 wifi() {
@@ -48,7 +49,7 @@ echo "Root: /dev/sda2"
 continuar
 cfdisk
 fdisk -l
-read -p "Introduce la unidad principal (p.e. 'sda')" sdx
+read -p "Introduce la unidad principal (p.e. 'sda'): " sdx
 mkfs.fat -F32 /dev/"$sdx"1
 cryptsetup -y -v luksFormat /dev/"$sdx"2
 cryptsetup config --label="Sistema" /dev/"$sdx"2
@@ -76,45 +77,9 @@ if [ "$TARGET" = "Rober-miniportátil" ]; then
 fi
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
+echo $TARGET >> dispositivo
+cp * /mnt/temp/archinstall
 
-echo "3 - Configurando sistema base"
-arch-chroot /mnt
-echo "$TARGET" >> /etc/hostname
-ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
-hwclock --systohc
-echo "LANG=es_ES.UTF-8" >> /etc/locale.conf
-echo "es_ES.UTF-8 UTF-8" >> /etc/locale.gen
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-locale-gen
-echo "KEYMAP=es" >> /etc/vconsole.conf
-echo "Escribe la contraseña de administración"
-passwd
+arch-chroot /mnt "sh /tmp/archinstall/2-install.sh"
 
-echo "4 - Configurando gestor de inicio"
-if [ "$TARGET" != "Rober-miniportátil" ]; then
-	grub-install --target=i386-pc /dev/$sdx
-	grub-mkconfig -o /boot/grub/grub.cfg
-else
-	bootctl install
-	e2label /dev/"$sdx"2 "Sistema"
-	
-	echo "title     Arch Linux" >> /boot/loader/entries/arch.conf
-	echo "linux     /vmlinuz-linux" >> /boot/loader/entries/arch.conf
-	echo "initrd    /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-	#configurar para amd si algún día tenemos uno...
-	echo "initrd    /intel-ucode.img" >> /boot/loader/entries/arch.conf
-	echo "options   root=LABEL=Sistema rw" >> /boot/loader/entries/arch.conf
-	echo "cryptdevice=UUID=device-UUID:root root=/dev/mapper/root" >> /boot/loader/entries/arch.conf
-	#si usamos NVIDIA
-	#echo "options   nvidia-drm.modeset=1" >> /boot/loader/entries/arch.conf
-	
-	sudo sed "s/HOOKS.*/HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
-	
-	rm /boot/loader/loader.conf
-	cat "default arch" >> /boot/loader/loader.conf
-	cat "timeout 0" >> /boot/loader/loader.conf
-	
-	pacman -S --needed --noconfirm intel-ucode
-fi
-mkinitcpio -p linux
 
