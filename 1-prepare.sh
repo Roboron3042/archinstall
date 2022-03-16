@@ -37,12 +37,16 @@ wifi() {
 	
 # Sugerencia: Usar sfdisk para replicar setups anteriores.
 
+echo "------------------------"
 echo "0 - Configuración previa"
+echo "------------------------"
 dispositivo
 wifi
 timedatectl set-ntp true
 
+echo "--------------------------"
 echo "1 - Iniciando particionado"
+echo "--------------------------"
 echo "Por favor crea las siguientes particiones"
 echo "Boot: /dev/sda1"
 echo "Root: /dev/sda2"
@@ -56,7 +60,9 @@ cryptsetup config --label="Sistema" /dev/"$sdx"2
 cryptsetup open /dev/"$sdx"2 root
 mkfs.ext4 /dev/mapper/root
 
+echo "---------------------------"
 echo "2 - Instalando sistema base"
+echo "---------------------------"
 mount /dev/mapper/root /mnt
 mkdir /mnt/boot
 mount /dev/"$sdx"1 /mnt/boot
@@ -80,6 +86,6 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 echo $TARGET >> dispositivo
 cp -r ../archinstall /mnt
 
-arch-chroot /mnt "/archinstall/2-install.sh"
-
-echo "Instalación base completada. Reinicia y ejecuta /archinstall/2-config.s para continuar"
+echo "Preparación del sistema finalizada"
+echo "Para continuar al paso 2, ejecuta: /archinstall/2-install.sh"
+arch-chroot /mnt
