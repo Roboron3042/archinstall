@@ -1,5 +1,5 @@
 echo "3 - Configurando sistema base"
-TARGET=$(cat /tmp/archinstall/dispositivo)
+TARGET=$(cat /archinstall/dispositivo)
 echo "$TARGET" >> /etc/hostname
 ln -s /usr/share/zoneinfo/Europe/Madrid /etc/localtime
 hwclock --systohc
@@ -12,7 +12,7 @@ echo "Escribe la contraseña de administración"
 passwd
 
 echo "4 - Configurando gestor de inicio"
-if [ "$TARGET" != "Rober-miniportátil" ]; then
+if [ "$TARGET" = "Rober-miniportátil" ]; then
 	grub-install --target=i386-pc /dev/sda
 	grub-mkconfig -o /boot/grub/grub.cfg
 else

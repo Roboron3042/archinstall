@@ -78,8 +78,8 @@ fi
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 echo $TARGET >> dispositivo
-cp * /mnt/temp/archinstall
+cp -r ../archinstall /mnt
 
-arch-chroot /mnt "sh /tmp/archinstall/2-install.sh"
+arch-chroot /mnt "/archinstall/2-install.sh"
 
-
+echo "Instalación base completada. Reinicia y ejecuta /archinstall/2-config.s para continuar"
