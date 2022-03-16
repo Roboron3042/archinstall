@@ -20,7 +20,7 @@ echo "4 - Configurando gestor de inicio"
 echo "---------------------------------"
 if [ "$TARGET" = "Rober-miniportátil" ]; then
 	grub-install --target=i386-pc /dev/sda
-	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=LABEL=Sistema:root root=/dev/mapper/root quiet splash"/g' /etc/default/grub
+	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=LABEL=Sistema:root root=\/dev\/mapper\/root quiet"/g' /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
 else
 	bootctl install
@@ -47,15 +47,12 @@ echo "---------------------------------------------------------"
 echo 'Server = http://ftp.rediris.es/mirror/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 echo 'Server = https://mirror.cloroformo.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 echo 'Server = https://mirror.librelabucm.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
-pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib git mesa
+pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib git mesa intel-ucode
 
-if [ "$TARGET" != "Rober-miniportátil" ]; then
-	pacman -S --needed --noconfirm intel-ucode
-fi
 if [ "$TARGET" != "Rober-pc" ]; then
 	pacman -S --needed --noconfirm xf86-video-intel vulkan-intel
 fi
 
 echo "Instalación base completada." 
-echo "Para continuar al paso 3, reinicia y ejecuta /archinstall/3-config.sh para continuar"
+echo "Para continuar al paso 3, reinicia y ejecuta /archinstall/3-config.sh"
 exit
