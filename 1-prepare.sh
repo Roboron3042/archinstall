@@ -2,7 +2,7 @@
 
 continuar() {
 	while true; do
-		read -p "¿Continuar? (s/n)" sn
+		read -p "¿Continuar? (s/n) " sn
 		case $sn in
 			[Ss]* ) break;;
 			[Nn]* ) ;;
@@ -25,24 +25,26 @@ dispositivo() {
 }
 
 wifi() {
-	while ! ping -c 1 www.google.es; do
-		read -p "¿Necesitas wifi?" sn
-		case $sn in
-			[Ss]* ) wifi-menu; break;;
-			[Nn]* ) echo "No puede procederse sin conexión"; exit;;
-			* ) echo "Responde sí o no";;
-		esac
-	done
+	if ! ping -c 1 www.github.com; then
+		echo "No hay conexión, intenta conectar al Wi-Fi"
+		echo "Lista de comandos necesarios:"
+		echo "iwctl device list"
+		echo "iwctl station DISPOSITIVO scan"
+		echo "iwctl station DISPOSITIVO get-networks"
+		echo "iwctl station DISPOSITIVO connect SSID"
+		exit
+	fi
 }
 	
-# Sugerencia: Usar sfdisk para replicar setups anteriores.
 
 echo "------------------------"
 echo "0 - Configuración previa"
 echo "------------------------"
-dispositivo
 wifi
+dispositivo
 timedatectl set-ntp true
+
+# Sugerencia: Usar sfdisk para replicar setups anteriores.
 
 echo "--------------------------"
 echo "1 - Iniciando particionado"
