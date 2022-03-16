@@ -74,6 +74,7 @@ chmod 600 /mnt/swapfile
 mkswap /mnt/swapfile
 swapon /mnt/swapfile
 echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
+continuar
 
 pacstrap /mnt base base-devel linux linux-firmware networkmanager
 if [ "$TARGET" != "Rober-PC" ]; then
@@ -84,7 +85,6 @@ if [ "$TARGET" = "Rober-miniportátil" ]; then
 fi
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
-echo $TARGET >> dispositivo
 cp -r ../archinstall /mnt
 
 echo "Preparación del sistema finalizada"
