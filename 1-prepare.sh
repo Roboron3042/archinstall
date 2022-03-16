@@ -73,8 +73,7 @@ mkswap /mnt/swapfile
 swapon /mnt/swapfile
 echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
-pacstrap /mnt base base-devel
-pacstrap /mnt networkmanager
+pacstrap /mnt base base-devel linux linux-firmware networkmanager
 if [ "$TARGET" != "Rober-PC" ]; then
 	pacstrap /mnt xf86-input-libinput
 fi
