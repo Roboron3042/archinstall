@@ -20,6 +20,7 @@ echo "4 - Configurando gestor de inicio"
 echo "---------------------------------"
 if [ "$TARGET" = "Miniportatil" ]; then
 	grub-install --target=i386-pc /dev/sda
+	sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=0/g' /etc/default/grub
 	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=LABEL=Sistema:root root=\/dev\/mapper\/root quiet"/g' /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
 else
@@ -38,7 +39,7 @@ else
 	echo "default arch" >> /boot/loader/loader.conf
 	echo "timeout 0" >> /boot/loader/loader.conf
 fi
-sed -i "s/HOOKS.*/HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
+sed -i "s/HOOKS.*/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
 mkinitcpio -p linux 
 
 echo "---------------------------------------------------------"
@@ -47,10 +48,10 @@ echo "---------------------------------------------------------"
 echo 'Server = http://ftp.rediris.es/mirror/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 echo 'Server = https://mirror.cloroformo.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 echo 'Server = https://mirror.librelabucm.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
-pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib mesa intel-ucode git
+pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib mesa mesa-vdpau libva-mesa-driver intel-ucode git
 
 if [ "$TARGET" != "PC" ]; then
-	pacman -S --needed --noconfirm xf86-video-intel vulkan-intel
+	pacman -S --needed --noconfirm vulkan-intel
 fi
 
 echo "Instalación base completada." 

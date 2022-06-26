@@ -74,6 +74,8 @@ chmod 600 /mnt/swapfile
 mkswap /mnt/swapfile
 swapon /mnt/swapfile
 
+# TODO: Usar iwd con networkmanager esté listo
+# https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues/922
 pacstrap /mnt base base-devel linux linux-firmware networkmanager
 if [ "$TARGET" != "PC" ]; then
 	pacstrap /mnt xf86-input-libinput
@@ -82,6 +84,7 @@ if [ "$TARGET" = "Miniportatil" ]; then
 	pacstrap /mnt grub
 fi
 genfstab -U -p /mnt >> /mnt/etc/fstab
+echo "tmpfs   /tmp         tmpfs   rw,nodev,nosuid,size=4G          0  0" >> /mnt/etc/fstab
 
 cp -r ../archinstall /mnt
 
