@@ -15,10 +15,11 @@ vdirsyncer discover contactos
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # Aplicar estilos cyberpunk-neon por primera vez
-gsettings set org.gnome.desktop.interface gtk-theme "materia-cyberpunk-neon"
 cd ~/Documentos
 git clone git@github.com:Roboron3042/Cyberpunk-Neon.git
-cd Cyberpunk-Neon/icons
+cd Cyberpunk-Neon/gtk
+tar xzf theme-cyberpunk-neon.zip -C ~/.local/share/themes/
+gsettings set org.gnome.desktop.interface gtk-theme "materia-cyberpunk-neon"
 
 #Weechat
 mkdir -p ~/.local/share/weechat/python/autoload
