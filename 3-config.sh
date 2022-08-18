@@ -40,7 +40,7 @@ trizen -S --noconfirm --needed cantata falkon firefox gimp keepassxc mpv nextclo
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Repositorio de usuarios
-trizen -S --needed crow-translate-git lagrange
+trizen -S --needed bar-protonmail crow-translate-git lagrange protonmail-bridge
 
 if [ "$TARGET" != "Miniportatil" ]; then
 	# KDE Apps

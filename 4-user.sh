@@ -21,6 +21,10 @@ cd Cyberpunk-Neon/gtk
 tar xzf theme-cyberpunk-neon.zip -C ~/.local/share/themes/
 gsettings set org.gnome.desktop.interface gtk-theme "materia-cyberpunk-neon"
 
-#Weechat
+# Weechat
 mkdir -p ~/.local/share/weechat/python/autoload
 ln -s /usr/share/weechat/python/weechat-matrix.py -t ~/.local/share/weechat/python/autoload
+ 
+# Correo
+echo "Inicia sesión en tu cuenta de Proton Mail para activar el indicador"
+bar-protonmail auth
