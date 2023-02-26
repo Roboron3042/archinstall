@@ -59,6 +59,16 @@ if [ "$TARGET" != "pc" ]; then
 	pacman -S --needed --noconfirm vulkan-intel
 fi
 
+systemctl enable --now NetworkManager
+
+echo "Creando usuario rober"
+useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power,scanner -s /bin/bash rober
+passwd rober
+pacman -S --needed --noconfirm xdg-user-dirs
+xdg-user-dirs-update
+
+sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/" /etc/sudoers
+
 echo "Instalación base completada." 
-echo "Para continuar al paso 3, reinicia y ejecuta /archinstall/3-config.sh"
+echo "Para continuar al paso 3, reinicia para iniciar sesión con tu usuario y ejecuta /archinstall/3-config.sh"
 exit

@@ -1,18 +1,15 @@
-systemctl enable --now dhcpcd
-systemctl enable --now NetworkManager
 if ! ping -c 1 www.github.com; then
 	echo "No hay conexión, intenta conectar al Wi-Fi"
 	echo "nmcli dev wifi connect SSID password CONTRASEÑA"
 	exit
 fi
 
-echo "Creando usuario rober"
-useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power,scanner -s /bin/bash rober
-passwd rober
-pacman -S --needed --noconfirm xdg-user-dirs
-xdg-user-dirs-update
-
-sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/"
+if ! [ -f "$HOME/.ssh/id_rsa" ]; then
+	echo "Para continuar, copia tus claves SSH desde otra sesión"
+	echo "ssh-copy-id -i ~/.ssh/id_rsa rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
+	echo "ssh-copy-id -i ~/.ssh/id_rsa.pub rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
+	exit
+fi
 
 echo "Instalando trizen"
 cd temp
@@ -70,10 +67,35 @@ fi
 echo "Instalando ZSH"
 trizen -S --noconfirm --needed zsh zsh-autosuggestions fzf zsh-syntax-highlighting zsh-theme-powerlevel10k
 # Repositorio de usuarios
-trizen -S --needed oh-my-zsh-git 
+trizen -S --needed oh-my-zsh-git
 
-echo "Instalación lista. Para terminar de configurar tu usuario:"
-echo "1. Copia tus claves SSH desde otra sesión"
-echo "   ssh-copy-id -i ~/.ssh/id_rsa rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
-echo "2. Inicia sesión"
-echo "3. Ejecuta /archinstall/4-user.sh"
+echo "Descargando y aplicando configuración"
+
+cd ~/Documentos
+git clone git@github.com:Roboron3042/dotfiles.git
+cd dotfiles
+./deploy.sh
+
+chsh -s /bin/zsh rober
+
+systemctl enable --now --user mpd
+vdirsyncer discover calendario
+vdirsyncer discover contactos
+
+# Neovim
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+# Aplicar estilos cyberpunk-neon por primera vez
+cd ~/Documentos
+git clone git@github.com:Roboron3042/Cyberpunk-Neon.git
+cd Cyberpunk-Neon/gtk
+tar xzf theme-cyberpunk-neon.zip -C ~/.local/share/themes/
+gsettings set org.gnome.desktop.interface gtk-theme "materia-cyberpunk-neon"
+
+# Weechat
+mkdir -p ~/.local/share/weechat/python/autoload
+ln -s /usr/share/weechat/python/weechat-matrix.py -t ~/.local/share/weechat/python/autoload
+ 
+# Correo
+echo "Inicia sesión en tu cuenta de Proton Mail para activar el indicador"
+bar-protonmail auth
