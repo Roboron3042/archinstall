@@ -25,20 +25,22 @@ trizen -S --noconfirm --needed libsecret seahorse libgnome-keyring
 # Calendario y contactos
 trizen -S --noconfirm --needed khard khal vdirsyncer
 # Otros
-trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux weechat weechat-matrix wget yt-dlp
-systemctl enable --now mpd
+trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux unzip weechat weechat-matrix wget yt-dlp
+systemctl enable --now --user mpd
 
 echo "Instalando aplicaciones esenciales"
-trizen -S --noconfirm --needed nerd-fonts-hack numlockx systemd-numlockontty
+trizen -S --noconfirm --needed ttf-hack-nerd numlockx systemd-numlockontty
 # Fuentes asiáticas
 trizen -S --noconfirm --needed noto-fonts-cjk
-systemctl enable numLockOnTty 
+sudo systemctl enable numLockOnTty 
 # Repositorio oficial
 trizen -S --noconfirm --needed cantata falkon firefox gimp keepassxc mpv nextcloud-client pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Repositorio de usuarios
-trizen -S --needed bar-protonmail crow-translate-git lagrange protonmail-bridge
+trizen -S --noconfirm --needed bar-protonmail lagrange protonmail-bridge
+echo "Cuando te pregunte, elige el paquete tesseract-spa (101?)"
+trizen -S --needed crow-translate-git
 
 if [ "$TARGET" != "miniportatil" ]; then
 	# KDE Apps
@@ -79,7 +81,6 @@ cd dotfiles
 
 chsh -s /bin/zsh rober
 
-systemctl enable --now --user mpd
 vdirsyncer discover calendario
 vdirsyncer discover contactos
 
@@ -90,7 +91,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 cd ~/Documentos
 git clone git@github.com:Roboron3042/Cyberpunk-Neon.git
 cd Cyberpunk-Neon/gtk
-tar xzf theme-cyberpunk-neon.zip -C ~/.local/share/themes/
+unzip materia-cyberpunk-neon.zip -d ~/.local/share/themes/
 gsettings set org.gnome.desktop.interface gtk-theme "materia-cyberpunk-neon"
 
 # Weechat
