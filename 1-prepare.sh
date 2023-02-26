@@ -13,12 +13,13 @@ continuar() {
 
 dispositivo() {
 	echo "¿Qué dispositivo estás configurando?"
-	select yn in "PC" "Portatil" "Miniportatil" "Otro"; do
+	select yn in "pc" "portatil" "miniportatil" "nomada" "otro"; do
 		case $yn in
-			"PC" ) TARGET="PC"; break;;
-			"Portatil" ) TARGET="Portatil"; break;;
-			"Miniportatil" ) TARGET="Miniportatil"; break;;
-			"Otro" ) TARGET="Otro" break;;
+			"pc" ) TARGET="pc"; break;;
+			"portatil" ) TARGET="portatil"; break;;
+			"miniportatil" ) TARGET="miniportatil"; break;;
+			"nomada" ) TARGET="nomada"; break;;
+			"otro" ) TARGET="otro" break;;
 		esac
 	done
 	echo $TARGET >> dispositivo
@@ -77,10 +78,10 @@ swapon /mnt/swapfile
 # TODO: Usar iwd con networkmanager esté listo
 # https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues/922
 pacstrap /mnt base base-devel linux linux-firmware networkmanager
-if [ "$TARGET" != "PC" ]; then
+if [ "$TARGET" != "pc" ]; then
 	pacstrap /mnt xf86-input-libinput
 fi
-if [ "$TARGET" = "Miniportatil" ]; then
+if [ "$TARGET" = "miniportatil" ]; then
 	pacstrap /mnt grub
 fi
 genfstab -U -p /mnt >> /mnt/etc/fstab

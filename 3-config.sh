@@ -42,7 +42,7 @@ trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Repositorio de usuarios
 trizen -S --needed bar-protonmail crow-translate-git lagrange protonmail-bridge
 
-if [ "$TARGET" != "Miniportatil" ]; then
+if [ "$TARGET" != "miniportatil" ]; then
 	# KDE Apps
 	trizen -S --noconfirm --needed ark gvfs dolphin gwenview okular tellico
 else
@@ -51,7 +51,7 @@ else
 fi
 
 # Wifi-UMA
-if [ "$TARGET" != "PC" ]; then
+if [ "$TARGET" != "pc" ]; then
 	trizen -S --noconfirm --needed python-distro network-manager-applet
 fi
 
@@ -59,7 +59,7 @@ echo "Instalando sway"
 trizen -S --noconfirm --needed  alacritty sway waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt6-wayland
 # Repositorio de usuarios
 trizen -S --noconfirm --needed wlsunset
-if [ "$TARGET" != "Miniportatil" ]; then
+if [ "$TARGET" == "miniportatil" ]; then
 	# El miniportátil necesita un driver diferente (temporalmente)
 	# https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/2506
 	# https://gitlab.freedesktop.org/mesa/mesa/-/issues/5418

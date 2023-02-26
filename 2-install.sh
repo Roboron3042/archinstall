@@ -18,7 +18,7 @@ passwd
 echo "---------------------------------"
 echo "4 - Configurando gestor de inicio"
 echo "---------------------------------"
-if [ "$TARGET" = "Miniportatil" ]; then
+if [ "$TARGET" = "miniportatil" ]; then
 	grub-install --target=i386-pc /dev/sda
 	sed -i 's/GRUB_TIMEOUT=./GRUB_TIMEOUT=0/g' /etc/default/grub
 	sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=LABEL=Sistema:root root=\/dev\/mapper\/root quiet"/g' /etc/default/grub
@@ -29,7 +29,7 @@ else
 	echo "title     Arch Linux" >> /boot/loader/entries/arch.conf
 	echo "linux     /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 	echo "initrd    /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-	#configurar para amd si algún día tenemos uno...
+	#TODO: configurar para amd si algún día tenemos uno...
 	echo "initrd    /intel-ucode.img" >> /boot/loader/entries/arch.conf
 	echo "options   root=LABEL=Sistema rw" >> /boot/loader/entries/arch.conf
 	echo "cryptdevice=LABEL=Sistema:root root=/dev/mapper/root" >> /boot/loader/entries/arch.conf
@@ -39,7 +39,12 @@ else
 	echo "default arch" >> /boot/loader/loader.conf
 	echo "timeout 0" >> /boot/loader/loader.conf
 fi
-sed -i "s/HOOKS.*/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
+#TODO: Cambiar para sistema "nomada"
+if [ "$TARGET" = "nomada" ]; then
+	sed -i "s/HOOKS.*/HOOKS=(base udev keyboard block autodetect keymap modconf encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
+else
+	sed -i "s/HOOKS.*/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
+fi
 mkinitcpio -p linux 
 
 echo "---------------------------------------------------------"
@@ -50,7 +55,7 @@ echo 'Server = https://mirror.cloroformo.org/archlinux/$repo/os/$arch' >> /etc/p
 echo 'Server = https://mirror.librelabucm.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib mesa mesa-vdpau libva-mesa-driver intel-ucode git
 
-if [ "$TARGET" != "PC" ]; then
+if [ "$TARGET" != "pc" ]; then
 	pacman -S --needed --noconfirm vulkan-intel
 fi
 
