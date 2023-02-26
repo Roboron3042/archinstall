@@ -1,21 +1,22 @@
 if ! ping -c 1 www.github.com; then
 	echo "No hay conexión, intenta conectar al Wi-Fi"
-	echo "nmcli dev wifi connect SSID password CONTRASEÑA"
+	echo "sudo nmcli dev wifi connect SSID password CONTRASEÑA"
 	exit
 fi
 
 if ! [ -f "$HOME/.ssh/id_rsa" ]; then
 	echo "Para continuar, copia tus claves SSH desde otra sesión"
-	echo "ssh-copy-id -i ~/.ssh/id_rsa rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
-	echo "ssh-copy-id -i ~/.ssh/id_rsa.pub rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
+	#echo "ssh-copy-id -i ~/.ssh/id_rsa rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
+	echo "scp -r ~/.ssh rober@$(ip address | grep 192 | sed "s/\/.*//g" | sed "s/^.*192/192/g")"
 	exit
 fi
 
 echo "Instalando trizen"
-cd temp
 git clone https://aur.archlinux.org/trizen.git
 cd trizen
 makepkg -si --noconfirm
+cd 
+rm -rf trizen
 
 echo "Instalando herramientas de CLI"
 
@@ -24,8 +25,8 @@ trizen -S --noconfirm --needed libsecret seahorse libgnome-keyring
 # Calendario y contactos
 trizen -S --noconfirm --needed khard khal vdirsyncer
 # Otros
-trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc newsboat nano ncdu neofetch neovim neovim-symlinks openssh pandoc rsync svn texlive-core thefuck tldr tmux weechat weechat-matrix wget yt-dlp
-systemctl enable --now sshd mpd
+trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux weechat weechat-matrix wget yt-dlp
+systemctl enable --now mpd
 
 echo "Instalando aplicaciones esenciales"
 trizen -S --noconfirm --needed nerd-fonts-hack numlockx systemd-numlockontty
