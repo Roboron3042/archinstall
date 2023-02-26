@@ -67,8 +67,6 @@ pacman -S --needed --noconfirm xdg-user-dirs openssh
 xdg-user-dirs-update
 systemctl enable --now NetworkManager sshd
 
-chmod +x /archinstall/3-config.sh
-
 echo "Instalación base completada." 
 echo "Para continuar al paso 3, reinicia, inicia sesión con rober y ejecuta /archinstall/3-config.sh"
 exit
