@@ -39,7 +39,7 @@ else
 	echo "default arch" >> /boot/loader/loader.conf
 	echo "timeout 0" >> /boot/loader/loader.conf
 fi
-#TODO: Cambiar para sistema "nomada"
+
 if [ "$TARGET" = "nomada" ]; then
 	sed -i "s/HOOKS.*/HOOKS=(base udev keyboard block autodetect keymap modconf encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
 else
@@ -66,6 +66,8 @@ sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/" /etc/s
 pacman -S --needed --noconfirm xdg-user-dirs openssh
 xdg-user-dirs-update
 systemctl enable --now NetworkManager sshd
+# Por si hacemos dual-boot con Windows
+timedatectl set-local-rtc 1 --adjust-system-clock
 
 echo "Instalación base completada." 
 echo "Para continuar al paso 3, reinicia, inicia sesión con rober y ejecuta /archinstall/3-config.sh"

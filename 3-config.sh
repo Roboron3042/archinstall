@@ -25,6 +25,7 @@ trizen -S --noconfirm --needed libsecret seahorse libgnome-keyring
 # Calendario y contactos
 trizen -S --noconfirm --needed khard khal vdirsyncer
 # Otros
+trizen -Rs --noconfirm vi
 trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux unzip weechat weechat-matrix wget yt-dlp
 systemctl enable --now --user mpd
 
@@ -34,7 +35,7 @@ trizen -S --noconfirm --needed ttf-hack-nerd numlockx systemd-numlockontty
 trizen -S --noconfirm --needed noto-fonts-cjk
 sudo systemctl enable numLockOnTty 
 # Repositorio oficial
-trizen -S --noconfirm --needed cantata falkon firefox gimp keepassxc mpv nextcloud-client pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
+trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv nextcloud-client nheko pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Repositorio de usuarios
@@ -44,7 +45,7 @@ trizen -S --needed crow-translate-git
 
 if [ "$TARGET" != "miniportatil" ]; then
 	# KDE Apps
-	trizen -S --noconfirm --needed ark gvfs dolphin gwenview okular tellico
+	trizen -S --noconfirm --needed ark breeze gvfs falkon dolphin gwenview okular tellico
 else
 	# Alternativas ligeras
 	trizen -S --noconfirm --needed lxqt-archiver gvfs pcmanfm-qt feh zathura
@@ -52,11 +53,11 @@ fi
 
 # Wifi-UMA
 if [ "$TARGET" != "pc" ]; then
-	trizen -S --noconfirm --needed python-distro network-manager-applet
+	trizen -S --noconfirm --needed python-distro network-manager-applet python-dbus
 fi
 
 echo "Instalando sway"
-trizen -S --noconfirm --needed  alacritty sway waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt6-wayland
+trizen -S --noconfirm --needed  alacritty sway waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xwayland autotiling
 # Repositorio de usuarios
 trizen -S --noconfirm --needed wlsunset
 if [ "$TARGET" == "miniportatil" ]; then
@@ -92,12 +93,11 @@ cd ~/Documentos
 git clone git@github.com:Roboron3042/Cyberpunk-Neon.git
 cd Cyberpunk-Neon/gtk
 unzip materia-cyberpunk-neon.zip -d ~/.local/share/themes/
-gsettings set org.gnome.desktop.interface gtk-theme "materia-cyberpunk-neon"
+gsettings set org.gnome.desktop.interface gtk-theme 'materia-cyberpunk-neon'
+cd ../icons
+./papirus-kolorizer.sh
 
 # Weechat
 mkdir -p ~/.local/share/weechat/python/autoload
 ln -s /usr/share/weechat/python/weechat-matrix.py -t ~/.local/share/weechat/python/autoload
  
-# Correo
-echo "Inicia sesión en tu cuenta de Proton Mail para activar el indicador"
-bar-protonmail auth
