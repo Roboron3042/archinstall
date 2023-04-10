@@ -36,7 +36,7 @@ trizen -S --noconfirm --needed ttf-hack-nerd numlockx systemd-numlockontty
 trizen -S --noconfirm --needed noto-fonts-cjk
 sudo systemctl enable numLockOnTty 
 # Repositorio oficial
-trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv nextcloud-client nheko pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
+trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv mpv-mpris nextcloud-client nheko pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Repositorio de usuarios
