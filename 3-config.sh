@@ -26,8 +26,9 @@ trizen -S --noconfirm --needed libsecret seahorse libgnome-keyring
 trizen -S --noconfirm --needed khard khal vdirsyncer
 # Otros
 trizen -Rs --noconfirm vi
-trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux unzip weechat weechat-matrix wget yt-dlp
+trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc mpris2 newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux unzip weechat weechat-matrix wget yt-dlp
 systemctl enable --now --user mpd
+systemctl enable --now --user mpDris2
 
 echo "Instalando aplicaciones esenciales"
 trizen -S --noconfirm --needed ttf-hack-nerd numlockx systemd-numlockontty
@@ -57,7 +58,7 @@ if [ "$TARGET" != "pc" ]; then
 fi
 
 echo "Instalando sway"
-trizen -S --noconfirm --needed  alacritty sway waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xwayland autotiling
+trizen -S --noconfirm --needed  alacritty sway swaybg waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xwayland autotiling
 # Repositorio de usuarios
 trizen -S --noconfirm --needed wlsunset
 if [ "$TARGET" == "miniportatil" ]; then
