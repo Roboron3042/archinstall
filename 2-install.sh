@@ -50,9 +50,14 @@ mkinitcpio -p linux
 echo "---------------------------------------------------------"
 echo "5 - Actualizando sistema e instalando paquetes esenciales"
 echo "---------------------------------------------------------"
+
 echo 'Server = http://ftp.rediris.es/mirror/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 echo 'Server = https://mirror.cloroformo.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 echo 'Server = https://mirror.librelabucm.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+
+# Habilita multilib (para Steam)
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
 pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib mesa mesa-vdpau libva-mesa-driver intel-ucode git
 
 if [ "$TARGET" != "pc" ]; then

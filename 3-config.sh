@@ -26,7 +26,7 @@ trizen -S --noconfirm --needed libsecret seahorse libgnome-keyring
 trizen -S --noconfirm --needed khard khal vdirsyncer
 # Otros
 trizen -Rs --noconfirm vi
-trizen -S --noconfirm --needed aerc dante w3m awk delta duf fzf htop lsd mpd mpc mpris2 newsboat nano ncdu neofetch neovim neovim-symlinks pandoc rsync svn texlive-core thefuck tldr tmux unzip weechat weechat-matrix wget yt-dlp
+trizen -S --noconfirm --needed aerc arp-scan bc dante w3m awk git-delta duf fzf htop lsd mpd mpc mpris2 newsboat nano ncdu neofetch neovim neovim-symlinks pandoc p7zip rsync svn texlive-core thefuck tldr tmux unzip urlview weechat weechat-matrix wget yt-dlp
 systemctl enable --now --user mpd
 systemctl enable --now --user mpDris2
 
@@ -39,6 +39,8 @@ sudo systemctl enable numLockOnTty
 trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv mpv-mpris nextcloud-client nheko pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
+# Aplicaciones propietarias
+trizen -S --noconfirm --needed steam discord code code-oss-marketplace
 # Repositorio de usuarios
 trizen -S --noconfirm --needed bar-protonmail lagrange protonmail-bridge
 echo "Cuando te pregunte, elige el paquete tesseract-spa (101?)"
