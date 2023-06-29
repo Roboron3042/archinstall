@@ -42,13 +42,13 @@ trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Aplicaciones propietarias
 trizen -S --noconfirm --needed steam discord code code-oss-marketplace
 # Repositorio de usuarios
-trizen -S --noconfirm --needed bar-protonmail lagrange protonmail-bridge
+trizen -S --noconfirm --needed bar-protonmail lagrange protonmail-bridge autofirma
 echo "Cuando te pregunte, elige el paquete tesseract-spa (101?)"
 trizen -S --needed crow-translate-git
 
 if [ "$TARGET" != "miniportatil" ]; then
 	# KDE Apps
-	trizen -S --noconfirm --needed ark breeze gvfs falkon dolphin gwenview okular tellico
+	trizen -S --noconfirm --needed ark breeze gvfs falkon dolphin gwenview okular tellico kid3
 else
 	# Alternativas ligeras
 	trizen -S --noconfirm --needed lxqt-archiver gvfs pcmanfm-qt feh zathura
@@ -57,6 +57,12 @@ fi
 # Wifi-UMA
 if [ "$TARGET" != "pc" ]; then
 	trizen -S --noconfirm --needed python-distro network-manager-applet python-dbus
+fi
+
+# Bluetooth
+if [ "$TARGET" == "nomada" ]; then
+	trizen -S --noconfirm --needed bluez bluez-utils
+	sudo systemctl enable --now bluetooth
 fi
 
 echo "Instalando sway"
