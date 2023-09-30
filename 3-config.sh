@@ -28,7 +28,7 @@ trizen -S --noconfirm --needed khard khal vdirsyncer
 trizen -Rs --noconfirm vi
 trizen -S --noconfirm --needed aerc arp-scan bc dante w3m awk git-delta duf fzf htop lsd mpd mpc mpris2 newsboat nano ncdu neofetch neovim neovim-symlinks pandoc p7zip rsync svn texlive-core thefuck tldr tmux unzip urlview weechat weechat-matrix wget yt-dlp
 systemctl enable --now --user mpd
-systemctl enable --now --user mpDris2
+#systemctl enable --now --user mpDris2
 
 echo "Instalando aplicaciones esenciales"
 trizen -S --noconfirm --needed ttf-hack-nerd numlockx systemd-numlockontty
@@ -40,7 +40,9 @@ trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv mpv-mpris next
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Aplicaciones propietarias
-trizen -S --noconfirm --needed steam discord code code-oss-marketplace
+trizen -S --noconfirm --needed steam discord
+# Desarrollo
+trizen -S --noconfirm --needed poedit aspell-es code code-oss-marketplace
 # Repositorio de usuarios
 trizen -S --noconfirm --needed bar-protonmail lagrange protonmail-bridge autofirma
 echo "Cuando te pregunte, elige el paquete tesseract-spa (101?)"

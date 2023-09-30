@@ -5,7 +5,7 @@ continuar() {
 		read -p "¿Continuar? (s/n) " sn
 		case $sn in
 			[Ss]* ) break;;
-			[Nn]* ) ;;
+			[Nn]* ) exit;;
 			* ) echo "Responde sí o no";;
 		esac
 	done
@@ -50,17 +50,20 @@ timedatectl set-ntp true
 echo "--------------------------"
 echo "1 - Iniciando particionado"
 echo "--------------------------"
-echo "Por favor crea las siguientes particiones"
-echo "Boot: /dev/sda1"
-echo "Root: /dev/sda2"
-continuar
-cfdisk
 fdisk -l
-read -p "Introduce la unidad principal (p.e. 'sda'): " sdx
-mkfs.fat -F32 /dev/"$sdx"1
-cryptsetup -y -v luksFormat /dev/"$sdx"2
-cryptsetup config --label="Sistema" /dev/"$sdx"2
-cryptsetup open /dev/"$sdx"2 root
+read -p "Introduce la unidad principal (p.e. 'sda'): " DISCO
+echo "Por favor crea las siguientes particiones: boot, root"
+if ! cfdisk "/dev/$DISCO"; then
+	exit
+fi
+
+fdisk -l "/dev/$DISCO"
+read -p "Introduce la particion de boot: " BOOT
+read -p "Introduce la particion de root: " ROOT
+#mkfs.fat -F32 /dev/"$BOOT"
+cryptsetup -y -v luksFormat /dev/"$ROOT"
+cryptsetup config --label="Sistema" /dev/"$ROOT"
+cryptsetup open /dev/"$ROOT" root
 mkfs.ext4 /dev/mapper/root
 
 echo "---------------------------"
@@ -68,12 +71,14 @@ echo "2 - Instalando sistema base"
 echo "---------------------------"
 mount /dev/mapper/root /mnt
 mkdir /mnt/boot
-mount /dev/"$sdx"1 /mnt/boot
+mount /dev/"$BOOT"1 /mnt/boot
 
-dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
-chmod 600 /mnt/swapfile
-mkswap /mnt/swapfile
-swapon /mnt/swapfile
+if [ "$TARGET" != "pc" ]; then
+	dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
+	chmod 600 /mnt/swapfile
+	mkswap /mnt/swapfile
+	swapon /mnt/swapfile
+fi
 
 # TODO: Usar iwd con networkmanager esté listo
 # https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues/922
