@@ -1,5 +1,6 @@
 
 TARGET=$(cat /archinstall/dispositivo)
+set -e
 
 echo "-----------------------------"
 echo "3 - Configurando sistema base"
@@ -29,20 +30,20 @@ else
 	echo "title     Arch Linux" >> /boot/loader/entries/arch.conf
 	echo "linux     /vmlinuz-linux" >> /boot/loader/entries/arch.conf
 	echo "initrd    /initramfs-linux.img" >> /boot/loader/entries/arch.conf
-	if [ "$TARGET" = "pc" ]; then
+	if [ "$TARGET" == "pc" ]; then
 		echo "initrd    /amd-ucode.img" >> /boot/loader/entries/arch.conf
 	else
 		echo "initrd    /intel-ucode.img" >> /boot/loader/entries/arch.conf
 	fi
 	echo "options cryptdevice=LABEL=Sistema:root root=/dev/mapper/root quiet rw" >> /boot/loader/entries/arch.conf
-	if [ "$TARGET" = "nomada"]; then
+	if [ "$TARGET" == "nomada"]; then
 		echo "options   nvidia-drm.modeset=1" >> /boot/loader/entries/arch.conf
 	fi
 	echo "default arch" >> /boot/loader/loader.conf
 	echo "timeout 0" >> /boot/loader/loader.conf
 fi
 
-if [ "$TARGET" = "nomada" ]; then
+if [ "$TARGET" == "nomada" ]; then
 	sed -i "s/HOOKS.*/HOOKS=(base udev keyboard block autodetect keymap modconf encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
 else
 	sed -i "s/HOOKS.*/HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block encrypt filesystems fsck)/g" /etc/mkinitcpio.conf
@@ -62,8 +63,8 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
 pacman -Syu --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack pipewire-media-session gst-plugin-pipewire pacman-contrib mesa mesa-vdpau libva-mesa-driver git
 
-if [ "$TARGET" = "pc" ]; then
-	pacman -S --needed --noconfirm vulkan-radeon amd-ucode
+if [ "$TARGET" == "pc" ]; then
+	pacman -S --needed --noconfirm vulkan-radeon vulkan-mesa-layers amd-ucode
 else
 	pacman -S --needed --noconfirm vulkan-intel intel-ucode
 fi
@@ -72,17 +73,17 @@ echo "Creando usuario rober"
 useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power,scanner -s /bin/bash rober
 passwd rober
 sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/" /etc/sudoers
-pacman -S --needed --noconfirm xdg-user-dirs openssh ntpd
+pacman -S --needed --noconfirm xdg-user-dirs openssh ntp
+systemctl enable NetworkManager sshd ntpd
 xdg-user-dirs-update
-systemctl enable --now NetworkManager sshd ntpd
 # ntpd Arregla la hora tras volver de la suspensión
 # Por si hacemos dual-boot con Windows
 timedatectl set-local-rtc 1 --adjust-system-clock
 
-if [ "$TARGET" = "nomada" ]; then
+if [ "$TARGET" == "nomada" ]; then
 	# Ajusta la ventilación de CPU (¿Solo Intel?)
 	pacman -S --needed --noconfirm thermald
-	systemctl enable --now thermald
+	systemctl enable thermald
 fi
 
 echo "Instalación base completada." 

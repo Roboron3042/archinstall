@@ -1,3 +1,5 @@
+set -e
+
 if ! ping -c 1 www.github.com; then
 	echo "No hay conexión, intenta conectar al Wi-Fi"
 	echo "sudo nmcli dev wifi connect SSID password CONTRASEÑA"
@@ -68,9 +70,9 @@ if [ "$TARGET" == "nomada" ]; then
 fi
 
 echo "Instalando sway"
-trizen -S --noconfirm --needed  alacritty sway swaybg waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xwayland autotiling
+trizen -S --noconfirm --needed  alacritty sway swaybg waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xorg-xwayland autotiling
 # Repositorio de usuarios
-trizen -S --noconfirm --needed wlsunset
+trizen -S --noconfirm --needed sirula-git wlsunset
 if [ "$TARGET" == "miniportatil" ]; then
 	# El miniportátil necesita un driver diferente (temporalmente)
 	# https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/2506

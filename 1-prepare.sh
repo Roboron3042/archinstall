@@ -41,6 +41,7 @@ wifi() {
 echo "------------------------"
 echo "0 - Configuración previa"
 echo "------------------------"
+set -e
 wifi
 dispositivo
 timedatectl set-ntp true
@@ -58,20 +59,20 @@ if ! cfdisk "/dev/$DISCO"; then
 fi
 
 fdisk -l "/dev/$DISCO"
-read -p "Introduce la particion de boot: " BOOT
-read -p "Introduce la particion de root: " ROOT
-#mkfs.fat -F32 /dev/"$BOOT"
+read -p "Introduce la particion de boot (p.e. 'sda1'): " BOOT
+read -p "Introduce la particion de root (p.e. 'sda2'): " ROOT
+mkfs.fat -F32 /dev/"$BOOT"
 cryptsetup -y -v luksFormat /dev/"$ROOT"
 cryptsetup config --label="Sistema" /dev/"$ROOT"
-cryptsetup open /dev/"$ROOT" root
-mkfs.ext4 /dev/mapper/root
+cryptsetup open /dev/"$ROOT" newroot
+mkfs.ext4 /dev/mapper/newroot
 
 echo "---------------------------"
 echo "2 - Instalando sistema base"
 echo "---------------------------"
-mount /dev/mapper/root /mnt
+mount /dev/mapper/newroot /mnt
 mkdir /mnt/boot
-mount /dev/"$BOOT"1 /mnt/boot
+mount /dev/"$BOOT" /mnt/boot
 
 if [ "$TARGET" != "pc" ]; then
 	dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192 status=progress
@@ -86,7 +87,7 @@ pacstrap /mnt base base-devel linux linux-firmware networkmanager
 if [ "$TARGET" != "pc" ]; then
 	pacstrap /mnt xf86-input-libinput
 fi
-if [ "$TARGET" = "miniportatil" ]; then
+if [ "$TARGET" == "miniportatil" ]; then
 	pacstrap /mnt grub
 fi
 genfstab -U -p /mnt >> /mnt/etc/fstab
