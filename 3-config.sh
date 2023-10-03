@@ -70,9 +70,9 @@ if [ "$TARGET" == "nomada" ]; then
 fi
 
 echo "Instalando sway"
-trizen -S --noconfirm --needed  alacritty sway swaybg waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xorg-xwayland autotiling
+trizen -S --noconfirm --needed  alacritty sway swaybg waybar grimshot wl-clipboard wf-recorder mako xdg-desktop-portal-wlr qt5ct qt6ct qt6-wayland xorg-xwayland autotiling light
 # Repositorio de usuarios
-trizen -S --noconfirm --needed sirula-git wlsunset
+trizen -S --noconfirm --needed sirula-git wlsunset wev
 if [ "$TARGET" == "miniportatil" ]; then
 	# El miniportátil necesita un driver diferente (temporalmente)
 	# https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/2506
