@@ -38,11 +38,11 @@ trizen -S --noconfirm --needed ttf-hack-nerd numlockx systemd-numlockontty
 trizen -S --noconfirm --needed noto-fonts-cjk
 sudo systemctl enable numLockOnTty 
 # Repositorio oficial
-trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv mpv-mpris nextcloud-client nheko pavucontrol-qt qbittorrent streamlink telegram-desktop zim 
+trizen -S --noconfirm --needed cantata firefox gimp keepassxc mpv mpv-mpris nextcloud-client nheko pavucontrol-qt qbittorrent speech-dispatcher streamlink telegram-desktop zim 
 # Zim
 trizen -S --noconfirm --needed zim gtkspell3 gtksourceview3 aspell
 # Aplicaciones propietarias
-trizen -S --noconfirm --needed steam discord
+trizen -S --noconfirm --needed steam discord mangohud gamescope
 # Desarrollo
 trizen -S --noconfirm --needed poedit aspell-es code code-oss-marketplace
 # Repositorio de usuarios
@@ -114,3 +114,8 @@ cd ../icons
 mkdir -p ~/.local/share/weechat/python/autoload
 ln -s /usr/share/weechat/python/weechat-matrix.py -t ~/.local/share/weechat/python/autoload
  
+# Extension External Application Launcher
+cd ~/Descargas
+wget https://github.com/andy-portmen/native-client/releases/download/0.9.5/linux.zip
+unzip linux.zip -d linux
+./linux/install.sh
